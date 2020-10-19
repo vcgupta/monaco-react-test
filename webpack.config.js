@@ -9,6 +9,9 @@ const webpack = require("webpack");
 
 
 
+// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
+
 // const to avoid typos 
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
@@ -22,7 +25,8 @@ function createRenderConfig(isDev) {
         target: "electron-renderer",
 
         resolve: {
-            extensions: [".js", ".jsx", ".ts", ".tsx", ".json"]
+            extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".css"],
+            
         },
 
         mode: isDev ? DEVELOPMENT : PRODUCTION,
@@ -48,6 +52,16 @@ function createRenderConfig(isDev) {
 
         module: {
             rules: [
+                {
+                    test: /\.(css)$/i,
+                    use: [
+                        // {
+                        //     loader: MiniCssExtractPlugin.loader,
+                        // },
+                        'style-loader',
+                        'css-loader',
+                    ]
+                },
 
                 {
                     test: /\.scss$/,
@@ -61,6 +75,14 @@ function createRenderConfig(isDev) {
                         "css-loader",
                         "sass-loader"
                     ]
+                },
+                {
+                    test: /\.(woff|woff2|eot|ttf|otf)$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                        },
+                    ],
                 },
 
                 {
@@ -120,6 +142,10 @@ function createRenderConfig(isDev) {
                     },
                 ]
             }),
+
+            // new MonacoWebpackPlugin({
+            //     languages: ['json', 'html', 'javascript', 'typescript']
+            // }),
 
         ],
 
